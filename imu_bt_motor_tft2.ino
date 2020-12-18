@@ -57,7 +57,7 @@ int xmin = 10;
 int xmax = 300;
 int index = 1;
 int maxindex = xmax - xmin -1;
-float accXprev, accYprev;
+float accXprev, accYprev, accZprev;
   
 float calcCoefficient(int yh, int yl, float vmin, float vmax)
 {
@@ -128,14 +128,17 @@ void  displayIMU()
   {
     tft.drawLine(xmin+index-1, y0-c*accXprev, xmin+index, y0-c*accX, ILI9341_RED);
     tft.drawLine(xmin+index-1, y0-c*accYprev, xmin+index, y0-c*accY, ILI9341_GREEN);
+    tft.drawLine(xmin+index-1, y0-c*accZprev, xmin+index, y0-c*accZ, ILI9341_YELLOW);
     accXprev = accX;
     accYprev = accY;
+    accZprev = accZ;
   }
   else // Leftmost point --> draw just the point
   {
     tft.startWrite();
     tft.writePixel(xmin+index, y0-c*accX, ILI9341_RED);
     tft.writePixel(xmin+index, y0-c*accY, ILI9341_GREEN);
+    tft.writePixel(xmin+index, y0-c*accZ, ILI9341_YELLOW);
     tft.endWrite();
   }
 
@@ -340,6 +343,7 @@ void loop() {
 
     default:
       Serial.println("--> unknown command");
+      cmd = '?';
       tft.println("?");
       runStop();
       break;
